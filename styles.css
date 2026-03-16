@@ -1,14 +1,55 @@
-.rounded-header {
-  background-color: #ffffff;
-  border: 1px solid #e0e0e0;
-  border-bottom-left-radius: 40px;
-  border-bottom-right-radius: 40px;
-  padding: 30px;
-  text-align: center;
-  font-family: "Segoe UI", Helvetica, Arial, sans-serif;
-  font-size: 2em;
-  font-weight: 600;
-  color: #444444;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-  letter-spacing: 0.5px;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  background: #f5f5f5;
+}
+
+.xyz-header-container {
+  background-color: #012F64;
+  color: white;
+  padding: 1.5rem 2rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.xyz-header-container h1 {
+  font-size: 1.8rem;
+  font-weight: 500;
+}
+
+.xyz-page-navigator {
+  display: flex;
+  background: white;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 0 2rem;
+  gap: 2rem;
+}
+
+.xyz-page-navigator a {
+  text-decoration: none;
+  color: #666;
+  font-weight: 500;
+  padding: 1rem 0;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.xyz-page-navigator a:hover {
+  color: #012F64;
+  border-bottom-color: #012F64;
+}
+
+.xyz-page-navigator a.xyz-active-page {
+  color: #012F64;
+  border-bottom-color: #012F64;
+}
+
+.xyz-main-content {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
