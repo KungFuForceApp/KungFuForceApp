@@ -1,8 +1,13 @@
 .rounded-header {
-      background-color: white;          /* White background */
-      border: 2px solid gray;           /* Gray outline */
-      border-bottom-left-radius: 25px;  /* Rounded bottom left corner */
-      border-bottom-right-radius: 25px; /* Rounded bottom right corner */
-      padding: 20px;
-      text-align: center;
-    }
+  background-color: #ffffff;
+  border: 2px solid #cccccc;
+  border-bottom-left-radius: 40px;
+  border-bottom-right-radius: 40px;
+  padding: 30px;
+  text-align: center;
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-size: 1.8em;
+  font-weight: bold;
+  color: #333333;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
