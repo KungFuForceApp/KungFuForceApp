@@ -1,14 +1,14 @@
 .rounded-header {
-  background: linear-gradient(to bottom, #ffffff, #f7f7f7);
-  border: 1px solid #d0d0d0;
-  border-bottom-left-radius: 50px;
-  border-bottom-right-radius: 50px;
-  padding: 40px;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-bottom-left-radius: 40px;
+  border-bottom-right-radius: 40px;
+  padding: 30px;
   text-align: center;
   font-family: "Segoe UI", Helvetica, Arial, sans-serif;
   font-size: 2em;
   font-weight: 600;
-  color: #2c2c2c;
-  box-shadow: 0 6px 12px rgba(0,0,0,0.08);
-  letter-spacing: 1px;
+  color: #444444;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  letter-spacing: 0.5px;
 }
