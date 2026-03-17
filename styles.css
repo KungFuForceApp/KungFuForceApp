@@ -22,11 +22,22 @@ body {
   margin-bottom: 0.8rem;
 }
 
+.common-chooser-wrapper {
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  border-top: 1px solid rgba(255,255,255,0.2);
+  padding-top: 0.8rem;
+}
+
+.common-chooser-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
 .common-inner-chooser {
   display: flex;
   gap: 2rem;
-  border-top: 1px solid rgba(255,255,255,0.2);
-  padding-top: 0.8rem;
+  min-width: min-content;
 }
 
 .common-inner-chooser a {
@@ -37,6 +48,7 @@ body {
   border-bottom: 3px solid transparent;
   transition: all 0.2s ease;
   font-size: 0.95rem;
+  white-space: nowrap;
 }
 
 .common-inner-chooser a:hover {
