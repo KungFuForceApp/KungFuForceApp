@@ -23,6 +23,8 @@ body {
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   width: 100%;
   flex-shrink: 0;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
 }
 
 .common-header-with-chooser h1 {
@@ -88,6 +90,8 @@ body {
 @media (max-width: 480px) {
   .common-header-with-chooser {
     padding: 1.5rem 1.5rem;
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
   }
   
   .common-header-with-chooser h1 {
