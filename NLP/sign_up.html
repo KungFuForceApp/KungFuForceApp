@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Kung Fu Force</title>
+    <style>
+        .goog-te-banner-frame.skiptranslate,
+        .goog-te-gadget-simple,
+        #google_translate_element,
+        .goog-te-menu-frame,
+        iframe.skiptranslate {
+            display: none !important;
+        }
+        body { top: 0 !important; margin: 0; padding: 0; }
+        .error-message {
+            color: #dc3545;
+            font-size: 13px;
+            margin-top: 5px;
+            display: none;
+        }
+        .loading-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body style="margin:0; padding:0; font-family:system-ui, -apple-system, sans-serif; background:#f5f5f5; height:100vh; display:flex; align-items:center; justify-content:center;">
+    <div style="width:1000px; height:600px; background:white; border-radius:20px; box-shadow:0 10px 30px rgba(0,0,0,0.1); display:flex; overflow:hidden; flex-direction:row-reverse;">
+        
+        <div style="flex:1; background:linear-gradient(135deg, #007bff, #0056b3); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:40px;">
+            <img src="../Image/Logo.png" alt="Kung Fu Force Logo" style="width:150px; height:150px; border-radius:50%; object-fit:cover; border:4px solid white; margin-bottom:30px;" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'150\' height=\'150\' viewBox=\'0 0 150 150\'%3E%3Ccircle cx=\'75\' cy=\'75\' r=\'75\' fill=\'white\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%23007bff\' font-size=\'16\' font-weight=\'bold\'%3EKung Fu%3C/text%3E%3C/svg%3E'">
+            <h1 style="color:white; font-size:32px; margin:0 0 10px 0; text-align:center;" translate="no">功夫坊</h1>
+            <p style="color:rgba(255,255,255,0.8); font-size:16px; text-align:center; margin:0;">Kung Fu Force</p>
+            <p style="color:rgba(255,255,255,0.7); font-size:14px; text-align:center; margin-top:30px;">Join our community</p>
+        </div>
+        
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:40px;">
+            <h2 style="font-size:28px; color:#333; margin:0 0 10px 0;">Create Account</h2>
+            <p style="font-size:14px; color:#999; margin:0 0 30px 0;">Sign up to get started</p>
+            
+            <div style="width:100%; max-width:320px;">
+                <div style="margin-bottom:15px;">
+                    <label style="display:block; font-size:14px; color:#666; margin-bottom:5px;">Username</label>
+                    <input type="text" id="username" placeholder="Choose a username" style="width:100%; padding:10px 12px; border:1px solid #ddd; border-radius:6px; font-size:14px; box-sizing:border-box; outline:none;" onfocus="this.style.borderColor='#007bff'" onblur="this.style.borderColor='#ddd'">
+                </div>
+                
+                <div style="margin-bottom:15px;">
+                    <label style="display:block; font-size:14px; color:#666; margin-bottom:5px;">Full Name</label>
+                    <input type="text" id="fullname" placeholder="Enter your full name" style="width:100%; padding:10px 12px; border:1px solid #ddd; border-radius:6px; font-size:14px; box-sizing:border-box; outline:none;" onfocus="this.style.borderColor='#007bff'" onblur="this.style.borderColor='#ddd'">
+                </div>
+                
+                <div style="margin-bottom:15px;">
+                    <label style="display:block; font-size:14px; color:#666; margin-bottom:5px;">Email</label>
+                    <input type="email" id="email" placeholder="Enter your email" style="width:100%; padding:10px 12px; border:1px solid #ddd; border-radius:6px; font-size:14px; box-sizing:border-box; outline:none;" onfocus="this.style.borderColor='#007bff'" onblur="this.style.borderColor='#ddd'">
+                </div>
+                
+                <div style="margin-bottom:15px;">
+                    <label style="display:block; font-size:14px; color:#666; margin-bottom:5px;">Password</label>
+                    <input type="password" id="password" placeholder="Create a password" style="width:100%; padding:10px 12px; border:1px solid #ddd; border-radius:6px; font-size:14px; box-sizing:border-box; outline:none;" onfocus="this.style.borderColor='#007bff'" onblur="this.style.borderColor='#ddd'">
+                </div>
+                
+                <div style="margin-bottom:15px;">
+                    <label style="display:block; font-size:14px; color:#666; margin-bottom:5px;">Confirm Password</label>
+                    <input type="password" id="confirmPassword" placeholder="Confirm your password" style="width:100%; padding:10px 12px; border:1px solid #ddd; border-radius:6px; font-size:14px; box-sizing:border-box; outline:none;" onfocus="this.style.borderColor='#007bff'" onblur="this.style.borderColor='#ddd'">
+                </div>
+                
+                <div id="errorMessage" class="error-message"></div>
+                
+                <button id="signUpBtn" onclick="signUp()" style="width:100%; padding:12px; background-color:#007bff; color:white; border:none; border-radius:6px; font-size:16px; cursor:pointer; transition:background-color 0.3s; display:flex; align-items:center; justify-content:center; margin-top:10px;" onmouseover="this.style.backgroundColor='#0056b3'" onmouseout="this.style.backgroundColor='#007bff'">Create Account</button>
+                
+                <div style="text-align:center; margin-top:20px;">
+                    <a href="sign_in.html" style="color:#007bff; font-size:13px; text-decoration:none;">Already have an account? Sign in</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="google_translate_element" style="display:none;"></div>
+
+    <script src="../scripts/UI/language.js"></script>
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <script>
+        const SITE_NAME = 'KungFuForceApp';
+        const API_URL = 'https://script.google.com/macros/s/AKfycby8E5Jbktp3Tpgo9nCk6HsDVESUEBSTewm2ML3HKIbnhgk9fFcCJYKaG93F8JepBqnwLw/exec';
+        const SHEET_ID = '1NQkI_WtmpP-9Si-g5MkmCbIbyc54-KD0cpZKO_AiixM';
+        const SHEET_NAME = 'Account';
+
+        async function signUp() {
+            const username = document.getElementById('username').value.trim();
+            const fullname = document.getElementById('fullname').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const confirmPassword = document.getElementById('confirmPassword').value.trim();
+            const errorMessage = document.getElementById('errorMessage');
+            const btn = document.getElementById('signUpBtn');
+            
+            if (!username || !fullname || !email || !password || !confirmPassword) {
+                errorMessage.style.display = 'block';
+                errorMessage.textContent = 'Please fill in all fields';
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                errorMessage.style.display = 'block';
+                errorMessage.textContent = 'Passwords do not match';
+                return;
+            }
+            
+            btn.innerHTML = '<span class="loading-spinner"></span> Creating account...';
+            btn.disabled = true;
+            
+            try {
+                const response = await fetch(API_URL + `?action=getAll&sheetId=${SHEET_ID}&sheetName=${SHEET_NAME}`);
+                const data = await response.json();
+                
+                if (data.error) throw new Error();
+                
+                const accounts = data.slice(1);
+                for (let account of accounts) {
+                    if (String(account[0]) === username) {
+                        btn.innerHTML = 'Create Account';
+                        btn.disabled = false;
+                        errorMessage.style.display = 'block';
+                        errorMessage.textContent = 'Username already exists';
+                        return;
+                    }
+                }
+                
+                const newRow = accounts.length + 2;
+                
+                await fetch(API_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    body: new URLSearchParams({
+                        action: 'write',
+                        sheetId: SHEET_ID,
+                        sheetName: SHEET_NAME,
+                        row: newRow.toString(),
+                        col: '1',
+                        value: username
+                    })
+                });
+                
+                await fetch(API_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    body: new URLSearchParams({
+                        action: 'write',
+                        sheetId: SHEET_ID,
+                        sheetName: SHEET_NAME,
+                        row: newRow.toString(),
+                        col: '2',
+                        value: password
+                    })
+                });
+                
+                await fetch(API_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    body: new URLSearchParams({
+                        action: 'write',
+                        sheetId: SHEET_ID,
+                        sheetName: SHEET_NAME,
+                        row: newRow.toString(),
+                        col: '3',
+                        value: fullname
+                    })
+                });
+                
+                await fetch(API_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    body: new URLSearchParams({
+                        action: 'write',
+                        sheetId: SHEET_ID,
+                        sheetName: SHEET_NAME,
+                        row: newRow.toString(),
+                        col: '4',
+                        value: email
+                    })
+                });
+                
+                localStorage.removeItem(`${SITE_NAME}/accounts`);
+                window.location.replace("sign_in.html");
+                
+            } catch (error) {
+                btn.innerHTML = 'Create Account';
+                btn.disabled = false;
+                errorMessage.style.display = 'block';
+                errorMessage.textContent = 'Account creation failed';
+            }
+        }
+    </script>
+</body>
+</html>

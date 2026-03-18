@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="overlay" id="overlay"></div>
+    
+    <div class="sidebar" id="sidebar">
+        <a href="HomeUnlogged.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="ClassInformation.html">Class Information</a>
+        <a href="video.html">Video</a>
+        <a href="news.html">News</a>
+    </div>
+
+    <div class="header">
+        <button class="menu-btn" id="menuBtn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <h2 translate="no">功夫坊 Kung Fu Force</h2>
+    </div>
+    
+    <img src="../Image/Logo.png" alt="Logo" class="logo" style="width: 20%; height: auto; border-radius: 1000px; display: block; margin: 0 auto; max-width: 100%; margin-top: 100px;">
+    <h1 translate="no" style="margin-top: 40px; color: rgb(0, 0, 0); text-align: center; font-size: 50px;">功夫坊 Kung Fu Force</h1>
+    <p style="margin-top: 40px; color: rgb(87, 87, 87); font-size: 20px; max-width: 600px; text-align: center; margin: 0 auto;">
+        Since 2013, we have been empowering students through martial arts—cultivating physical fitness, discipline, respect, and award-winning achievements in schools and communities.
+    </p>
+    <button onclick="window.location.href='sign_in.html'" style="padding: 20px 40px; background-color: #007bff; color: white; border: none; border-radius: 10px; cursor: pointer; display: block; margin: 50px auto 0 auto; font-size: 20px">Become a Member</button>
+
+    <div style="max-width:1200px; margin:60px auto 0; padding:0 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h2 style="font-size:28px; color:#333; margin-bottom:20px; padding-left:10px;">Latest Videos</h2>
+            <div style="text-align:right; margin:10px 10px 0 0;">
+                <a href="video.html" style="color:#007bff; text-decoration:none; font-size:16px;">View All →</a>
+            </div>
+        </div>
+        <div style="overflow-x:auto; white-space:nowrap; padding:10px 0 20px; scrollbar-width:thin; scrollbar-color:#007bff #f0f0f0;" id="videoScroll">
+            <div style="display:inline-flex; gap:20px; padding:0 10px;" id="homeVideoContainer"></div>
+        </div>
+    </div>
+
+    <div style="max-width:1200px; margin:60px auto 0; padding:0 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h2 style="font-size:28px; color:#333; margin-bottom:20px; padding-left:10px;">Latest News</h2>
+            <div style="text-align:right; margin:10px 10px 0 0;">
+                <a href="news.html" style="color:#007bff; text-decoration:none; font-size:16px;">View All →</a>
+            </div>
+        </div>
+        <div style="overflow-x:auto; white-space:nowrap; padding:10px 0 20px; scrollbar-width:thin; scrollbar-color:#007bff #f0f0f0;" id="newsScroll">
+            <div style="display:inline-flex; gap:20px; padding:0 10px;" id="homeNewsContainer"></div>
+        </div>
+    </div>
+
+    <div id="google_translate_element" style="display: none;"></div>
+
+    <script src="../scripts/UI/3LineSideBar.js"></script>
+    <script src="../scripts/UI/language.js"></script>
+    <script>
+        const SITE_NAME = typeof WEBSITE_NAME !== 'undefined' ? WEBSITE_NAME : 'KungFuForceApp';
+        const videoContainer = document.getElementById('homeVideoContainer');
+        const newsContainer = document.getElementById('homeNewsContainer');
+
+        function loadHomeContent() {
+            loadLatestVideos();
+            loadLatestNews();
+        }
+
+        function loadLatestVideos() {
+            try {
+                const cachedData = localStorage.getItem(`${SITE_NAME}/videos`);
+                if (cachedData) {
+                    const data = JSON.parse(cachedData);
+                    const videos = data.slice(1).reverse().slice(0, 5);
+                    renderVideoCards(videos);
+                }
+            } catch (error) {}
+        }
+
+        function loadLatestNews() {
+            try {
+                const cachedData = localStorage.getItem(`${SITE_NAME}/news`);
+                if (cachedData) {
+                    const data = JSON.parse(cachedData);
+                    const news = data.slice(1).reverse().slice(0, 5);
+                    renderNewsCards(news);
+                }
+            } catch (error) {}
+        }
+
+        function renderVideoCards(videos) {
+            let html = '';
+            videos.forEach(video => {
+                const title = video[0] || 'No title';
+                const videoUrl = video[1] || '#';
+                const description = video[2] || 'No description';
+                const thumbnailUrl = video[3] || '';
+                
+                html += `
+                    <div onclick="window.open('${videoUrl}', '_blank')" style="width:280px; background:white; border-radius:12px; overflow:hidden; box-shadow:0 4px 15px rgba(0,0,0,0.1); transition:transform 0.3s ease; cursor:pointer; display:inline-block; white-space:normal;">
+                        ${thumbnailUrl ? 
+                            `<img src="${thumbnailUrl}" alt="${title}" style="width:100%; height:160px; object-fit:cover; background:#ddd;" 
+                                 onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22160%22 viewBox=%220 0 300 160%22%3E%3Crect width=%22300%22 height=%22160%22 fill=%22%23dddddd%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22system-ui%22 font-size=%2214%22 fill=%22%23999%22%3ENo Image%3C/text%3E%3C/svg%3E'">` : 
+                            `<div style="width:100%; height:160px; background:#ddd; display:flex; align-items:center; justify-content:center; color:#999;">No Image</div>`
+                        }
+                        <div style="padding:15px;">
+                            <div style="font-size:1.1em; font-weight:600; color:#333; margin-bottom:8px; white-space:normal; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">${escapeHtml(title)}</div>
+                            <div style="font-size:0.9em; color:#666; white-space:normal; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">${escapeHtml(description)}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            videoContainer.innerHTML = html;
+        }
+
+        function renderNewsCards(news) {
+            let html = '';
+            news.forEach(item => {
+                const title = item[0] || 'No title';
+                const content = item[1] || '';
+                const date = item[2] || '';
+                const imageUrl = item[3] || '';
+                const documentUrl = item[4] || '#';
+                const summary = content.length > 60 ? content.substring(0, 60) + '...' : content;
+                
+                html += `
+                    <div onclick="window.open('${documentUrl}', '_blank')" style="width:280px; background:white; border-radius:12px; overflow:hidden; box-shadow:0 4px 15px rgba(0,0,0,0.1); transition:transform 0.3s ease; cursor:pointer; display:inline-block; white-space:normal;">
+                        ${imageUrl ? 
+                            `<img src="${imageUrl}" alt="${title}" style="width:100%; height:160px; object-fit:cover; background:#ddd;" 
+                                 onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22160%22 viewBox=%220 0 300 160%22%3E%3Crect width=%22300%22 height=%22160%22 fill=%22%23dddddd%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22system-ui%22 font-size=%2214%22 fill=%22%23999%22%3ENo Image%3C/text%3E%3C/svg%3E'">` : 
+                            `<div style="width:100%; height:160px; background:#ddd; display:flex; align-items:center; justify-content:center; color:#999;">No Image</div>`
+                        }
+                        <div style="padding:15px;">
+                            <div style="font-size:1.1em; font-weight:600; color:#333; margin-bottom:8px; white-space:normal; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">${escapeHtml(title)}</div>
+                            <div style="font-size:0.9em; color:#666; white-space:normal; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">${escapeHtml(summary)}</div>
+                            <div style="font-size:0.8em; color:#999; margin-top:8px;">${escapeHtml(date)}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            newsContainer.innerHTML = html;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        loadHomeContent();
+    </script>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - Kung Fu Force</title>
+    <style>
+        .goog-te-banner-frame.skiptranslate,
+        .goog-te-gadget-simple,
+        #google_translate_element,
+        .goog-te-menu-frame,
+        iframe.skiptranslate {
+            display: none !important;
+        }
+        body { top: 0 !important; margin: 0; padding: 0; }
+        .error-message {
+            color: #dc3545;
+            font-size: 13px;
+            margin-top: 5px;
+            display: none;
+        }
+        .loading-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body style="margin:0; padding:0; font-family:system-ui, -apple-system, sans-serif; background:#f5f5f5; height:100vh; display:flex; align-items:center; justify-content:center;">
+    <div style="width:900px; height:500px; background:white; border-radius:20px; box-shadow:0 10px 30px rgba(0,0,0,0.1); display:flex; overflow:hidden;">
+        
+        <div style="flex:1; background:linear-gradient(135deg, #007bff, #0056b3); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:40px;">
+            <img src="../Image/Logo.png" alt="Kung Fu Force Logo" style="width:150px; height:150px; border-radius:50%; object-fit:cover; border:4px solid white; margin-bottom:30px;" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'150\' height=\'150\' viewBox=\'0 0 150 150\'%3E%3Ccircle cx=\'75\' cy=\'75\' r=\'75\' fill=\'white\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%23007bff\' font-size=\'16\' font-weight=\'bold\'%3EKung Fu%3C/text%3E%3C/svg%3E'">
+            <h1 style="color:white; font-size:32px; margin:0 0 10px 0; text-align:center;" translate="no">功夫坊</h1>
+            <p style="color:rgba(255,255,255,0.8); font-size:16px; text-align:center; margin:0;">Kung Fu Force</p>
+            <p style="color:rgba(255,255,255,0.7); font-size:14px; text-align:center; margin-top:30px;">Since 2013</p>
+        </div>
+        
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:40px;">
+            <h2 style="font-size:28px; color:#333; margin:0 0 10px 0;">Welcome Back</h2>
+            <p style="font-size:14px; color:#999; margin:0 0 30px 0;">Sign in to your account</p>
+            
+            <div style="width:100%; max-width:300px;">
+                <div style="margin-bottom:20px;">
+                    <label style="display:block; font-size:14px; color:#666; margin-bottom:5px;">Username</label>
+                    <input type="text" id="username" placeholder="Enter your username" style="width:100%; padding:12px 15px; border:1px solid #ddd; border-radius:8px; font-size:14px; box-sizing:border-box; outline:none;" onfocus="this.style.borderColor='#007bff'" onblur="this.style.borderColor='#ddd'">
+                </div>
+                
+                <div style="margin-bottom:15px;">
+                    <label style="display:block; font-size:14px; color:#666; margin-bottom:5px;">Password</label>
+                    <input type="password" id="password" placeholder="Enter your password" style="width:100%; padding:12px 15px; border:1px solid #ddd; border-radius:8px; font-size:14px; box-sizing:border-box; outline:none;" onfocus="this.style.borderColor='#007bff'" onblur="this.style.borderColor='#ddd'">
+                </div>
+                
+                <div id="errorMessage" class="error-message"></div>
+                
+                <button id="signInBtn" onclick="signIn()" style="width:100%; padding:12px; background-color:#007bff; color:white; border:none; border-radius:8px; font-size:16px; cursor:pointer; transition:background-color 0.3s; display:flex; align-items:center; justify-content:center;" onmouseover="this.style.backgroundColor='#0056b3'" onmouseout="this.style.backgroundColor='#007bff'">Sign In</button>
+                
+                <div style="display:flex; justify-content:space-between; margin-top:20px;">
+                    <a href="#" style="color:#666; font-size:13px; text-decoration:none;">Forgot password?</a>
+                    <a href="sign_up.html" style="color:#007bff; font-size:13px; text-decoration:none;">Create account</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="google_translate_element" style="display:none;"></div>
+
+    <script src="../scripts/UI/language.js"></script>
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <script>
+        const SITE_NAME = 'KungFuForceApp';
+        const API_URL = 'https://script.google.com/macros/s/AKfycby8E5Jbktp3Tpgo9nCk6HsDVESUEBSTewm2ML3HKIbnhgk9fFcCJYKaG93F8JepBqnwLw/exec';
+        const SHEET_ID = '1NQkI_WtmpP-9Si-g5MkmCbIbyc54-KD0cpZKO_AiixM';
+        const SHEET_NAME = 'Account';
+
+        (async function() {
+            try {
+                const cachedAccounts = localStorage.getItem(`${SITE_NAME}/accounts`);
+                if (!cachedAccounts) {
+                    const response = await fetch(API_URL + `?action=getAll&sheetId=${SHEET_ID}&sheetName=${SHEET_NAME}`);
+                    const data = await response.json();
+                    if (!data.error) {
+                        localStorage.setItem(`${SITE_NAME}/accounts`, JSON.stringify(data));
+                    }
+                }
+            } catch (error) {}
+        })();
+
+        async function signIn() {
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const errorMessage = document.getElementById('errorMessage');
+            const btn = document.getElementById('signInBtn');
+            
+            if (!username || !password) {
+                errorMessage.style.display = 'block';
+                errorMessage.textContent = 'Please enter username and password';
+                return;
+            }
+            
+            btn.innerHTML = '<span class="loading-spinner"></span> Signing in...';
+            btn.disabled = true;
+            
+            try {
+                const cachedAccounts = localStorage.getItem(`${SITE_NAME}/accounts`);
+                let accounts = [];
+                
+                if (cachedAccounts) {
+                    const data = JSON.parse(cachedAccounts);
+                    accounts = data.slice(1);
+                } else {
+                    const response = await fetch(API_URL + `?action=getAll&sheetId=${SHEET_ID}&sheetName=${SHEET_NAME}`);
+                    const data = await response.json();
+                    if (data.error) throw new Error();
+                    accounts = data.slice(1);
+                    localStorage.setItem(`${SITE_NAME}/accounts`, JSON.stringify(data));
+                }
+                
+                let found = false;
+                for (let account of accounts) {
+                    if (String(account[0]) === username && String(account[1]) === password) {
+                        found = true;
+                        break;
+                    }
+                }
+                
+                if (found) {
+                    localStorage.setItem(`${SITE_NAME}/username`, username);
+                    window.location.replace("HomeAccount.html");
+                } else {
+                    btn.innerHTML = 'Sign In';
+                    btn.disabled = false;
+                    errorMessage.style.display = 'block';
+                    errorMessage.textContent = 'Invalid username or password';
+                }
+                
+            } catch (error) {
+                btn.innerHTML = 'Sign In';
+                btn.disabled = false;
+                errorMessage.style.display = 'block';
+                errorMessage.textContent = 'Login failed';
+            }
+        }
+    </script>
+</body>
+</html>

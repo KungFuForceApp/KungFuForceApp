@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="overlay" id="overlay"></div>
+    
+    <div class="sidebar" id="sidebar">
+        <a href="HomeUnlogged.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="ClassInformation.html">Class Information</a>
+        <a href="video.html">Video</a>
+        <a href="news.html">News</a>
+    </div>
+
+    <div class="header">
+        <button class="menu-btn" id="menuBtn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <h2 translate="no">功夫坊 Kung Fu Force</h2>
+    </div>
+    
+    <div style="display:flex; flex-direction:column; align-items:center; position:relative;">
+        <h1 style="margin-top:40px; color:#000; text-align:center; font-size:50px;">News</h1>
+        <button class="refresh-btn" onclick="refreshNews()" title="Refresh news" style="position:absolute; right:20px; top:20px; background:#007bff; color:white; border:none; border-radius:50%; width:50px; height:50px; font-size:24px; cursor:pointer; box-shadow:0 2px 10px rgba(0,0,0,0.1);">↻</button>
+    </div>
+    
+    <p style="margin-top:40px; color:#575757; font-size:20px; max-width:1000px; text-align:center; margin:40px auto 0 auto;">
+        Stay updated with the latest news, announcements, and stories from our martial arts community. From upcoming events to student achievements, find out what's happening at Kung Fu Force!
+    </p>
+    
+    <div id="loading" class="loading" style="text-align:center; padding:50px; font-size:1.2em; color:#666;">Loading...</div>
+    <div id="error" class="error" style="display:none; text-align:center; padding:50px; font-size:1.2em; color:#dc3545;"></div>
+    <div id="newsGrid" class="news-grid" style="display:none; grid-template-columns:repeat(auto-fill, minmax(350px, 1fr)); gap:25px; padding:40px 20px; max-width:1200px; margin:0 auto;"></div>
+
+    <div id="google_translate_element" style="display:none;"></div>
+
+    <script src="../scripts/UI/3LineSideBar.js"></script>
+    <script src="../scripts/UI/language.js"></script>
+    <script>
+        const loadingEl = document.getElementById('loading');
+        const errorEl = document.getElementById('error');
+        const newsGridEl = document.getElementById('newsGrid');
+        const SITE_NAME = typeof WEBSITE_NAME !== 'undefined' ? WEBSITE_NAME : 'KungFuForceApp';
+
+        function loadNews() {
+            try {
+                const cachedData = localStorage.getItem(`${SITE_NAME}/news`);
+                
+                if (cachedData) {
+                    const data = JSON.parse(cachedData);
+                    loadingEl.style.display = 'none';
+                    
+                    if (!data || data.length <= 1) {
+                        newsGridEl.style.display = 'grid';
+                        newsGridEl.innerHTML = '<div style="text-align:center; padding:50px; font-size:1.2em; color:#666; grid-column:1/-1;">No news available</div>';
+                        return;
+                    }
+                    
+                    renderNews(data);
+                } else {
+                    fetchNews();
+                }
+            } catch (error) {
+                loadingEl.style.display = 'none';
+                errorEl.style.display = 'block';
+                errorEl.textContent = 'Failed to load';
+            }
+        }
+
+        async function fetchNews(showLoading = true) {
+            try {
+                if (showLoading) {
+                    loadingEl.style.display = 'block';
+                    newsGridEl.style.display = 'none';
+                    errorEl.style.display = 'none';
+                }
+                
+                const API_URL = 'https://script.google.com/macros/s/AKfycby8E5Jbktp3Tpgo9nCk6HsDVESUEBSTewm2ML3HKIbnhgk9fFcCJYKaG93F8JepBqnwLw/exec';
+                const SHEET_ID = '1NQkI_WtmpP-9Si-g5MkmCbIbyc54-KD0cpZKO_AiixM';
+                const SHEET_NAME = 'News';
+                
+                const response = await fetch(API_URL + `?action=getAll&sheetId=${SHEET_ID}&sheetName=${SHEET_NAME}`);
+                const data = await response.json();
+                
+                if (showLoading) {
+                    loadingEl.style.display = 'none';
+                }
+                
+                if (data.error) throw new Error();
+                
+                if (!data || data.length <= 1) {
+                    newsGridEl.style.display = 'grid';
+                    newsGridEl.innerHTML = '<div style="text-align:center; padding:50px; font-size:1.2em; color:#666; grid-column:1/-1;">No news available</div>';
+                    return;
+                }
+                
+                localStorage.setItem(`${SITE_NAME}/news`, JSON.stringify(data));
+                localStorage.setItem(`${SITE_NAME}/news_time`, Date.now().toString());
+                renderNews(data);
+                
+            } catch (error) {
+                if (showLoading) {
+                    loadingEl.style.display = 'none';
+                }
+                errorEl.style.display = 'block';
+                errorEl.textContent = 'Failed to load';
+            }
+        }
+
+        function renderNews(data) {
+            const news = data.slice(1);
+            let html = '';
+            
+            news.forEach(item => {
+                const title = item[0] || 'No title';
+                const content = item[1] || '';
+                const date = item[2] || '';
+                const imageUrl = item[3] || '';
+                const documentUrl = item[4] || '#';
+                
+                const summary = content.length > 100 ? content.substring(0, 100) + '...' : content;
+                
+                html += `
+                    <div class="news-card" onclick="window.open('${documentUrl}', '_blank')" style="background:white; border-radius:12px; overflow:hidden; box-shadow:0 4px 15px rgba(0,0,0,0.1); cursor:pointer;">
+                        ${imageUrl ? 
+                            `<img src="${imageUrl}" alt="${title}" class="news-image" style="width:100%; height:200px; object-fit:cover; background:#ddd;" 
+                                 onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22350%22 height=%22200%22 viewBox=%220 0 350 200%22%3E%3Crect width=%22350%22 height=%22200%22 fill=%22%23dddddd%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22system-ui%22 font-size=%2214%22 fill=%22%23999%22%3ENo Image%3C/text%3E%3C/svg%3E'">` : 
+                            `<div style="width:100%; height:200px; background:#ddd; display:flex; align-items:center; justify-content:center; color:#999;">No Image</div>`
+                        }
+                        <div style="padding:20px;">
+                            <h3 style="font-size:1.3em; font-weight:600; color:#333; margin:0 0 10px 0;">${escapeHtml(title)}</h3>
+                            <div style="font-size:0.85em; color:#999; margin-bottom:10px;">${escapeHtml(date)}</div>
+                            <p style="font-size:0.95em; color:#666; line-height:1.6; margin:0 0 15px 0;">${escapeHtml(summary)}</p>
+                            <a href="${documentUrl}" class="read-more" target="_blank" onclick="event.stopPropagation()" style="display:inline-block; padding:8px 16px; background:#007bff; color:white; text-decoration:none; border-radius:6px;">📄 Read More</a>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            newsGridEl.style.display = 'grid';
+            newsGridEl.innerHTML = html;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function refreshNews() {
+            fetchNews(true);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadNews();
+        });
+    </script>
+</body>
+</html>
