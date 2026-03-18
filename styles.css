@@ -14,7 +14,6 @@ body {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  padding: 0 10px; /* Add padding to see the rounded corners */
 }
 
 .common-header-with-chooser {
@@ -24,7 +23,8 @@ body {
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   width: 100%;
   flex-shrink: 0;
-  border-radius: 0 0 30px 30px; /* This will actually show now */
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
 }
 
 .common-header-with-chooser h1 {
@@ -88,13 +88,10 @@ body {
 }
 
 @media (max-width: 480px) {
-  body {
-    padding: 0 5px;
-  }
-  
   .common-header-with-chooser {
     padding: 1.5rem 1.5rem;
-    border-radius: 0 0 20px 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
   }
   
   .common-header-with-chooser h1 {
